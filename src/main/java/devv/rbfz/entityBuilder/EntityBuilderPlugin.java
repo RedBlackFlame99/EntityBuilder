@@ -2,7 +2,7 @@ package devv.rbfz.entityBuilder;
 
 import org.bukkit.plugin.java.JavaPlugin;
 
-public final class EntityBuilder extends JavaPlugin {
+public final class EntityBuilderPlugin extends JavaPlugin {
 
     @Override
     public void onEnable() {
