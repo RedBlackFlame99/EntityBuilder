@@ -1,0 +1,5 @@
+name: EntityBuilder
+version: '1.0.0.0'
+main: devv.rbfz.entityBuilder.EntityBuilder
+api-version: '1.21'
+authors: [ RedTheDev ]
