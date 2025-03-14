@@ -3,3 +3,9 @@ version: '1.0.0.0'
 main: devv.rbfz.entityBuilder.EntityBuilderPlugin
 api-version: '1.21'
 authors: [ RedTheDev ]
+
+commands:
+  entitybuilder:
+    aliases:
+      - eb
+      - ebuilder

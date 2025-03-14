@@ -1,5 +1,10 @@
 plugins {
     id 'java'
+    id("com.gradleup.shadow") version "9.0.0-beta10"
+}
+
+build {
+    dependsOn(shadowJar)
 }
 
 group = 'devv.rbfz'
@@ -15,10 +20,19 @@ repositories {
         name = "sonatype"
         url = "https://oss.sonatype.org/content/groups/public/"
     }
+    maven {
+        name = "CodeMC"
+        url = uri("https://repo.codemc.io/repository/maven-public/")
+    }
 }
 
 dependencies {
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
+    implementation("de.tr7zw:item-nbt-api:2.14.1")
+}
+
+shadowJar {
+    relocate("de.tr7zw.changeme.nbtapi", "devv.rbfz.entityBuilder.api")
 }
 
 def targetJavaVersion = 21
