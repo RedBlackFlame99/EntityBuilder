@@ -27,11 +27,14 @@ public class EntityBuilder {
 
     private final Map<String, Object> meta;
 
+    // This list is required for the strings to be "components"
+    private final List<String> customStringFlags = List.of("CustomName");
+
     public EntityBuilder(EntityType entityType) {
         this.entityType = entityType;
         meta = new HashMap<>();
         meta.put("id", entityType.name().toLowerCase());
-        meta.put("CustomName", "\"§dThis was made with §5EntityBuilder §dby §5RedTheDev\"");
+        meta.put("CustomName", "§dThis was made with §5EntityBuilder §dby §5RedTheDev");
         meta.put("CustomNameVisible", true);
     }
 
@@ -53,12 +56,15 @@ public class EntityBuilder {
             for (String key : meta.keySet()) {
                 Object value = meta.get(key);
                 if (value instanceof String) {
-                    ((String) value).replace("&", "§");
+                    value = ((String) value).replace("&", "§");
+                    if (customStringFlags.contains(key)) {
+                        value = "\"" + value + "\"";
+                    }
                     entityData.setString(key, String.valueOf(value));
                 } else if (value instanceof Boolean) {
                     entityData.setBoolean(key, (boolean) value);
                 } else if (value instanceof Integer) {
-                    entityData.setInteger(key, Integer.parseInt(value.toString()));
+                    entityData.setInteger(key, (int) value);
                 }
             }
 
@@ -69,5 +75,10 @@ public class EntityBuilder {
     public void setMetaValue(String key, Object value) {
         meta.remove(key);
         meta.put(key, value);
+    }
+
+    public Object getMetaValue(String key) {
+        meta.getOrDefault(key, null);
+        return meta.getOrDefault(key, null);
     }
 }

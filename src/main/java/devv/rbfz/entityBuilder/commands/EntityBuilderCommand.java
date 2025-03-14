@@ -22,6 +22,11 @@ public class EntityBuilderCommand implements CommandExecutor {
         if (args.length > 0) {
             if (args[0].equalsIgnoreCase("create")) {
                 if (args.length > 1) {
+                    if (builders.containsKey(player)) {
+                        player.sendMessage("You are already building an entity!");
+                        return true;
+                    }
+
                     String input = args[1];
                     EntityType type;
                     try {
@@ -71,26 +76,19 @@ public class EntityBuilderCommand implements CommandExecutor {
                 if (args.length > 1) {
                     String meta = args[1];
                     if (args.length > 2) {
-                        String rawValue = args[2];
-                        String flag = "";
-                        if (args.length > 3) {
-                            flag = args[3];
+                        String rawValue;
+                        StringBuilder stringBuilder = new StringBuilder();
+                        int i = 2;
+                        while (i < args.length) {
+                            stringBuilder.append(args[i]).append(" ");
+                            i++;
                         }
+                        rawValue = stringBuilder.toString().trim();
 
-                        Object value;
-                        if (flag.equalsIgnoreCase("-int")) {
-                            try {
-                                value = Integer.parseInt(rawValue);
-                            } catch (NumberFormatException e) {
-                                value = 1;
-                            }
-                        } else if (flag.equalsIgnoreCase("-boolean")) {
-                            value = Boolean.parseBoolean(rawValue);
-                        }
-                        else {
-                            value = rawValue;
-                        }
-                        builder.setMetaValue(meta, value);
+                        builder.setMetaValue(meta, parseValue(rawValue));
+                        player.sendMessage(args[1] + ": " + builder.getMetaValue(args[1]));
+                    } else {
+                        player.sendMessage("Usage: /eb edit " + args[1] + " [VALUE]");
                     }
                 }
             }
@@ -98,5 +96,20 @@ public class EntityBuilderCommand implements CommandExecutor {
 
 
         return false;
+    }
+
+    public static Object parseValue(String input) {
+        // Try to parse as an Integer
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException ignored) {}
+
+        // Try to parse as a Boolean
+        if (input.equalsIgnoreCase("true") || input.equalsIgnoreCase("false")) {
+            return Boolean.parseBoolean(input);
+        }
+
+        // If neither, return the string itself
+        return input;
     }
 }
